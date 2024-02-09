@@ -112,7 +112,7 @@ class DatabaseSeeder extends Seeder
             'semester_id'   => $feb->id,
             'maandag'       => '2024-02-12',
             'nummer'        => 1,
-            'naam'          => 'Herfstvakantie',
+            'naam'          => 'Voorjaarsvakantie',
             'type'          => 'vakantie',
         ]);
         Week::create([
