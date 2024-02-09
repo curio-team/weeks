@@ -102,5 +102,128 @@ class DatabaseSeeder extends Seeder
             'naam'          => 'Bufferweek',
             'type'          => 'bufferweek',
         ]);
+
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-02-05',
+            'nummer'        => 1,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-02-12',
+            'nummer'        => 1,
+            'naam'          => 'Herfstvakantie',
+            'type'          => 'vakantie',
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-02-19',
+            'nummer'        => 2,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-02-26',
+            'nummer'        => 3,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-03-24',
+            'nummer'        => 4,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-03-11',
+            'nummer'        => 5,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-03-18',
+            'nummer'        => 6,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-03-25',
+            'nummer'        => 7,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-04-01',
+            'nummer'        => 8,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-04-08',
+            'nummer'        => 9,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-04-15',
+            'nummer'        => 10,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-04-22',
+            'nummer'        => 10,
+            'naam'          => 'Meivakantie',
+            'type'          => 'vakantie'
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-04-29',
+            'nummer'        => 10,
+            'naam'          => 'Meivakantie',
+            'type'          => 'vakantie'
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-05-06',
+            'nummer'        => 11,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-05-13',
+            'nummer'        => 12,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-05-20',
+            'nummer'        => 13,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-05-27',
+            'nummer'        => 14,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-06-03',
+            'nummer'        => 15,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-06-10',
+            'nummer'        => 16,
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-06-17',
+            'nummer'        => 17,
+            'naam'          => 'Bufferweek',
+            'type'          => 'bufferweek',
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-06-24',
+            'nummer'        => 17,
+            'naam'          => 'Bufferweek',
+            'type'          => 'bufferweek',
+        ]);
+        Week::create([
+            'semester_id'   => $feb->id,
+            'maandag'       => '2024-07-01',
+            'nummer'        => 17,
+            'naam'          => 'Diplomeringsweek',
+            'type'          => 'bufferweek',
+        ]);
     }
 }
