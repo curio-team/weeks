@@ -127,7 +127,7 @@ class DatabaseSeeder extends Seeder
         ]);
         Week::create([
             'semester_id'   => $feb->id,
-            'maandag'       => '2024-03-24',
+            'maandag'       => '2024-03-04',
             'nummer'        => 4,
         ]);
         Week::create([
