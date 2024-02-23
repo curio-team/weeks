@@ -23,7 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
         events: '/api/list',
         eventContent: function( info ) {
             return {html: info.event.title};
-        }
+        },
+        eventOrder: 'extendedProps.cohort',
+        eventOrderStrict: true
     });
     calendar.render();
 });

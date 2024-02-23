@@ -26,8 +26,17 @@ Route::get('/', function () {
     return Week::prepareData($weeks);
 });
 
-Route::get('/only/{type}', function ($type) {
-    $weeks = Week::getCurrentWeeks();
+Route::get('/cohort/{cohort}', function ($cohort) {
+    $weeks = Week::getCurrentWeeks($cohort);
+    return Week::prepareData($weeks);
+});
+
+Route::get('/only/{type}', fn($type) => getOnly($type));
+Route::get('/cohort/{cohort}/only/{type}', fn ($cohort, $type) => getOnly($type, $cohort));
+
+function getOnly($type, $cohort = null)
+{
+    $weeks = Week::getCurrentWeeks($cohort);
     $data  = Week::prepareData($weeks);
 
     switch ($type) {
@@ -37,7 +46,7 @@ Route::get('/only/{type}', function ($type) {
         default:
             return ['error' => ['code' => 3, 'text' => 'ongeldig type']];
     }
-});
+}
 
 Route::get('/list', function (Request $request) {
     
@@ -48,6 +57,7 @@ Route::get('/list', function (Request $request) {
     {
         $title = "<strong>Week $week->nummer</strong>";
         if($week->naam) $title = "Week $week->nummer - <strong>$week->naam</strong>";
+        if($week->cohort) $title = "C$week->cohort: $title";
         $result[] = [
             'id' => 'w' . $week->id,
             'allDay' => true,
@@ -55,21 +65,25 @@ Route::get('/list', function (Request $request) {
             'end' => $week->maandag->addDays(5),
             'title' => $title,
             'color' => '#48486e',
-            'textColor' => '#ededf7'
+            'textColor' => '#ededf7',
+            'cohort' => $week->cohort ?? 0
         ];
     }
 
     $semesters = Semester::whereDate('start', '<=', $request->end)->whereDate('eind', '>=', $request->start)->get();
     foreach($semesters as $semester)
     {
+        $title = "<em>Blok $semester->naam_kort / {$semester->schooljaar->naam}</em>";
+        if($semester->cohort) $title = "C$semester->cohort: $title";
         $result[] = [
             'id' => 's' . $semester->id,
             'allDay' => true,
             'start' => $semester->start,
             'end' => $semester->eind,
-            'title' => "<em>Blok $semester->naam_kort / {$semester->schooljaar->naam}</em>",
+            'title' => $title,
             'color' => '#c1d6ca',
-            'textColor' => '#626e67'
+            'textColor' => '#626e67',
+            'cohort' => (100 + $semester->cohort) ?? 100
         ];
     }
 

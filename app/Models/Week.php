@@ -18,9 +18,15 @@ class Week extends Model
         return $this->belongsTo(Semester::class);
     }
 
-    public static function getCurrentWeeks()
+    public static function getCurrentWeeks($cohort = null)
     {
         $maandag = now()->startOfWeek(Carbon::MONDAY);
+
+        if($cohort) {
+            $week = Week::whereDate('maandag', $maandag)->where('cohort', $cohort)->get();
+            if($week->count() > 0) return $week;
+        }
+
         return Week::whereDate('maandag', $maandag)->get();
     }
 

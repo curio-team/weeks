@@ -225,5 +225,82 @@ class DatabaseSeeder extends Seeder
             'naam'          => 'Diplomeringsweek',
             'type'          => 'bufferweek',
         ]);
+
+
+
+        ////////////////
+
+
+
+        $sep = Semester::create([
+            'schooljaar_id' => Schooljaar::whereYear('start', 2023)->first()->id,
+            'volgorde'  => 'sep',
+            'start' => '2023-08-28',
+            'eind'  => '2024-04-07',
+            'cohort'        => 21
+        ]);
+        $feb = Semester::create([
+            'schooljaar_id' => Schooljaar::whereYear('start', 2023)->first()->id,
+            'volgorde'  => 'feb',
+            'start' => '2024-04-08',
+            'eind'  => '2024-07-07',
+            'cohort'        => 21
+        ]);
+        Week::create([
+            'semester_id'   => $sep->id,
+            'maandag'       => '2024-02-05',
+            'nummer'        => 17,
+            'cohort'        => 21
+        ]);
+        Week::create([
+            'semester_id'   => $sep->id,
+            'maandag'       => '2024-02-12',
+            'nummer'        => 17,
+            'naam'          => 'Voorjaarsvakantie',
+            'type'          => 'vakantie',
+            'cohort'        => 21
+        ]);
+        Week::create([
+            'semester_id'   => $sep->id,
+            'maandag'       => '2024-02-19',
+            'nummer'        => 18,
+            'cohort'        => 21
+        ]);
+        Week::create([
+            'semester_id'   => $sep->id,
+            'maandag'       => '2024-02-26',
+            'nummer'        => 19,
+            'cohort'        => 21
+        ]);
+        Week::create([
+            'semester_id'   => $sep->id,
+            'maandag'       => '2024-03-04',
+            'nummer'        => 20,
+            'cohort'        => 21
+        ]);
+        Week::create([
+            'semester_id'   => $sep->id,
+            'maandag'       => '2024-03-11',
+            'nummer'        => 21,
+            'cohort'        => 21
+        ]);
+        Week::create([
+            'semester_id'   => $sep->id,
+            'maandag'       => '2024-03-18',
+            'nummer'        => 22,
+            'cohort'        => 21
+        ]);
+        Week::create([
+            'semester_id'   => $sep->id,
+            'maandag'       => '2024-03-25',
+            'nummer'        => 23,
+            'cohort'        => 21
+        ]);
+        Week::create([
+            'semester_id'   => $sep->id,
+            'maandag'       => '2024-04-01',
+            'nummer'        => 24,
+            'cohort'        => 21
+        ]);
     }
 }

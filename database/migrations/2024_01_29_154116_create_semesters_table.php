@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('volgorde', ['sep', 'feb']);
             $table->date('start');
             $table->date('eind');
+            $table->integer('cohort')->nullable();
             $table->timestamps();
         });
     }

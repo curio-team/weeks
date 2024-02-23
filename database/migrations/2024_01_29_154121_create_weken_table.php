@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('nummer');
             $table->string('naam')->nullable();
             $table->enum('type', ['lesweek', 'bufferweek', 'vakantie'])->default('lesweek');
+            $table->integer('cohort')->nullable();
             $table->timestamps();
         });
     }
