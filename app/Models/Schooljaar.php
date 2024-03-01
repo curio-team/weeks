@@ -17,4 +17,9 @@ class Schooljaar extends Model
     {
         return "Schooljaar {$this->start->format('y')}-{$this->eind->format('y')}";
     }
+
+    public function semesters()
+    {
+        return $this->hasMany(Semester::class);
+    }
 }

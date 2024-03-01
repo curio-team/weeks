@@ -18,6 +18,11 @@ class Semester extends Model
         return $this->belongsTo(Schooljaar::class);
     }
 
+    public function weeks()
+    {
+        return $this->hasMany(Week::class);
+    }
+
     public function getNaamAttribute()
     {
         return $this->start->year . "-" . $this->volgorde;
