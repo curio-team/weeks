@@ -10,7 +10,7 @@
 
     </head>
     <body>
-        <div class="container-fluid" style="padding: 5vh;">
+        <div class="container-fluid" style="padding: 2vh;">
             <div id="calendar"></div>
         </div>
     </body>

@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
         plugins: [ dayGridPlugin, bootstrap5Plugin ],
         themeSystem: 'bootstrap5',
         initialView: 'dayGridMonth',
-        height: '90vh',
+        height: '96vh',
+        // height: 'auto',
         firstDay: 1,
         weekends: false,
         fixedWeekCount: false,
@@ -27,5 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
         eventOrder: 'extendedProps.cohort',
         eventOrderStrict: true
     });
+
     calendar.render();
+    setTimeout(function() {
+        calendar.updateSize();
+    }, 250);
 });
