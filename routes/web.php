@@ -16,3 +16,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/login', fn() => redirect('/amoclient/redirect'))->name('login');
+Route::get('/amoclient/ready', fn() => redirect('/admin'));
