@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\SchooljaarResource\Pages;
+namespace App\Filament\Resources\SemesterResource\Pages;
 
-use App\Filament\Resources\SchooljaarResource;
+use App\Filament\Resources\SemesterResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditSchooljaar extends EditRecord
+class EditSemester extends EditRecord
 {
-    protected static string $resource = SchooljaarResource::class;
+    protected static string $resource = SemesterResource::class;
 
     protected function getHeaderActions(): array
     {
@@ -16,7 +16,7 @@ class EditSchooljaar extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-    
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

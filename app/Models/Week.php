@@ -41,6 +41,7 @@ class Week extends Model
             unset($week->id, $week->semester_id, $week->created_at, $week->updated_at, $week->semester);
             unset($semester->id, $semester->schooljaar_id, $semester->created_at, $semester->updated_at, $semester->schooljaar);
             unset($schooljaar->id, $schooljaar->created_at, $schooljaar->updated_at);
+            unset($week->cohort, $semester->cohort);
 
             return [
                 "week" => $week,

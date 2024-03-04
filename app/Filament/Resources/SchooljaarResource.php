@@ -29,30 +29,29 @@ class SchooljaarResource extends Resource
                     ->required()
                     ->label('Startdatum')
                     ->hint('eerste dag van het schooljaar'),
-                    Forms\Components\DatePicker::make('eind')
-                    ->autofocus()
+                Forms\Components\DatePicker::make('eind')
                     ->required()
                     ->label('Einddatum')
                     ->hint('laatste dag van het schooljaar'),
-            ]);
+            ])
+            ->columns(1);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('naam'),
+                Tables\Columns\TextColumn::make('start')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('eind')
+                    ->date()
+                    ->sortable()
             ])
-            ->filters([
-                //
-            ])
+            ->defaultSort('start')
             ->actions([
                 Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 

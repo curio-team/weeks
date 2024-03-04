@@ -27,14 +27,14 @@ class DatabaseSeeder extends Seeder
 
         $sep = Semester::create([
             'schooljaar_id' => Schooljaar::whereYear('start', 2023)->first()->id,
-            'volgorde'  => 'sep',
+            'volgorde'  => 1,
             'start' => '2023-08-28',
             'eind'  => '2024-02-04'
         ]);
 
         $feb = Semester::create([
             'schooljaar_id' => Schooljaar::whereYear('start', 2023)->first()->id,
-            'volgorde'  => 'feb',
+            'volgorde'  => 2,
             'start' => '2024-02-05',
             'eind'  => '2024-07-07'
         ]);
@@ -234,14 +234,14 @@ class DatabaseSeeder extends Seeder
 
         $sep = Semester::create([
             'schooljaar_id' => Schooljaar::whereYear('start', 2023)->first()->id,
-            'volgorde'  => 'sep',
+            'volgorde'  => 1,
             'start' => '2023-08-28',
             'eind'  => '2024-04-07',
             'cohort'        => 21
         ]);
         $feb = Semester::create([
             'schooljaar_id' => Schooljaar::whereYear('start', 2023)->first()->id,
-            'volgorde'  => 'feb',
+            'volgorde'  => 2,
             'start' => '2024-04-08',
             'eind'  => '2024-07-07',
             'cohort'        => 21

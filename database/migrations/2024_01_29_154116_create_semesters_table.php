@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('semesters', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Schooljaar::class);
-            $table->enum('volgorde', ['sep', 'feb']);
+            $table->integer('volgorde');
             $table->date('start');
             $table->date('eind');
             $table->integer('cohort')->nullable();
