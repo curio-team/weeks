@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class SchooljaarResource extends Resource
 {
     protected static ?string $model = Schooljaar::class;
+    protected static ?string $navigationGroup = 'Basisdata';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $pluralModelLabel = 'schooljaren';
     protected static ?string $slug = 'schooljaren';

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\WeekType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
@@ -10,7 +11,8 @@ class Week extends Model
 {
     protected $table = 'weken';
     protected $casts = [
-        'maandag' => 'date:Y-m-d'
+        'maandag' => 'date:Y-m-d',
+        'type'    => WeekType::class
     ];
 
     public function semester()
@@ -22,9 +24,9 @@ class Week extends Model
     {
         $maandag = now()->startOfWeek(Carbon::MONDAY);
 
-        if($cohort) {
+        if ($cohort) {
             $week = Week::whereDate('maandag', $maandag)->where('cohort', $cohort)->get();
-            if($week->count() > 0) return $week;
+            if ($week->count() > 0) return $week;
         }
 
         return Week::whereDate('maandag', $maandag)->get();
@@ -33,7 +35,7 @@ class Week extends Model
     public static function prepareData($weeks)
     {
         // Als we een exacte match hebben, geef die terug;
-        if(count($weeks) >= 1) {
+        if (count($weeks) >= 1) {
             $week = $weeks->first();
             $semester = $week->semester;
             $schooljaar = $semester->schooljaar;
@@ -48,7 +50,6 @@ class Week extends Model
                 "semester" => $semester,
                 "schooljaar" => $schooljaar
             ];
-        }
-        elseif(count($weeks) < 1) return ['error' => ['code' => 1, 'text' => 'geen week gevonden']];
+        } elseif (count($weeks) < 1) return ['error' => ['code' => 1, 'text' => 'geen week gevonden']];
     }
 }

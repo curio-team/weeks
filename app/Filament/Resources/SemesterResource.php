@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class SemesterResource extends Resource
 {
     protected static ?string $model = Semester::class;
-
+    protected static ?string $navigationGroup = 'Basisdata';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

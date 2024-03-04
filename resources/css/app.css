@@ -1,12 +1,12 @@
-html{
+html {
     font-size: 14px;
 }
 
-.fc .fc-toolbar.fc-header-toolbar{
+.fc .fc-toolbar.fc-header-toolbar {
     margin-bottom: 1em;
 }
 
-.fc-event-main{
+.fc-event-main {
     font-size: 1rem;
     padding: 2px 7px !important;
 }
