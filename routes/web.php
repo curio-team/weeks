@@ -14,5 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', fn () => view('calendar'));
-Route::get('/login', fn() => redirect('/amoclient/redirect'))->name('login');
-Route::get('/amoclient/ready', fn() => redirect('/admin'));
+Route::get('/login', fn () => redirect('/sdclient/redirect'))->name('login');
+Route::get('/sdclient/ready', fn () => redirect('/admin'));
+
+Route::get('/sdclient/error', function () {
+    $error = session('sdclient.error');
+    $error_description = session('sdclient.error_description');
+    return 'There was an error signing in: ' . $error_description . ' (' . $error . ')<br><a href="/login">Try again</a>';
+});
