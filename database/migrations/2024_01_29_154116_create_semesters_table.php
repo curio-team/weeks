@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('semesters', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Schooljaar::class);
+            $table->foreignIdFor(Schooljaar::class)->constrained(table: 'schooljaren', indexName: 'schooljaar_id')->onDelete('cascade');
             $table->integer('volgorde');
             $table->date('start');
             $table->date('eind');

@@ -5,6 +5,9 @@ namespace App\Filament\Pages;
 use Closure;
 use App\Enums\Volgorde;
 use App\Enums\WeekType;
+use App\Models\Schooljaar;
+use App\Models\Semester;
+use App\Models\Week;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Filament\Pages\Page;
@@ -19,6 +22,7 @@ use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\View;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
 
@@ -184,12 +188,7 @@ class Wizard extends Page implements HasForms
                         }),
                 ])->submitAction(
                     new HtmlString(Blade::render(<<<BLADE
-                        <x-filament::button
-                            type="submit"
-                            size="sm"
-                        >
-                            Submit
-                        </x-filament::button>
+                        <x-filament::button type="submit" size="sm">Opslaan</x-filament::button>
                     BLADE))
                 )
             ])->statePath('data');
@@ -202,6 +201,39 @@ class Wizard extends Page implements HasForms
 
     public function create(): void
     {
-        dd($this->form->getState());
+        $data = $this->form->getState();
+        $schooljaar = new Schooljaar();
+        $schooljaar->start = $data['schooljaar_start'];
+        $schooljaar->eind = $data['schooljaar_eind'];
+        $schooljaar->save();
+
+        $volgorde = 1;
+        foreach ($data['semesters'] as $data_semester) {
+            $semester = new Semester();
+            $semester->schooljaar_id = $schooljaar->id;
+            $semester->volgorde = $volgorde;
+            $semester->start = $data_semester['start'];
+            $semester->eind = $data_semester['eind'];
+            $semester->save();
+
+            foreach ($data_semester['weeks'] as $data_week) {
+                $week = new Week();
+                $week->semester_id = $semester->id;
+                $week->maandag = $data_week['monday'];
+                $week->nummer = $data_week['num'];
+                $week->naam = $data_week['name'] ?? null;
+                $week->type = $data_week['type'] ?? 'lesweek';
+                $week->save();
+            }
+
+            $volgorde++;
+        }
+
+        Notification::make()
+            ->title('Saved successfully')
+            ->success()
+            ->send();
+
+        $this->redirect('/admin/schooljaren');
     }
 }

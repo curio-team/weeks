@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\WeekType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
@@ -31,7 +32,7 @@ Route::get('/cohort/{cohort}', function ($cohort) {
     return Week::prepareData($weeks);
 });
 
-Route::get('/only/{type}', fn($type) => getOnly($type));
+Route::get('/only/{type}', fn ($type) => getOnly($type));
 Route::get('/cohort/{cohort}/only/{type}', fn ($cohort, $type) => getOnly($type, $cohort));
 
 function getOnly($type, $cohort = null)
@@ -49,15 +50,19 @@ function getOnly($type, $cohort = null)
 }
 
 Route::get('/list', function (Request $request) {
-    
+
     $result = array();
-    
+
     $weeks = Week::whereDate('maandag', '>=', $request->start)->whereDate('maandag', '<=', $request->end)->get();
-    foreach($weeks as $week)
-    {
+    foreach ($weeks as $week) {
+
+        if ($week->type == WeekType::BUFFER && !$week->naam) {
+            $week->naam = "Bufferweek";
+        }
+
         $title = "<strong>Week $week->nummer</strong>";
-        if($week->naam) $title = "Week $week->nummer - <strong>$week->naam</strong>";
-        if($week->cohort) $title = "C$week->cohort: $title";
+        if ($week->naam) $title = "Week $week->nummer - <strong>$week->naam</strong>";
+        if ($week->cohort) $title = "C$week->cohort: $title";
         $result[] = [
             'id' => 'w' . $week->id,
             'allDay' => true,
@@ -71,10 +76,9 @@ Route::get('/list', function (Request $request) {
     }
 
     $semesters = Semester::whereDate('start', '<=', $request->end)->whereDate('eind', '>=', $request->start)->get();
-    foreach($semesters as $semester)
-    {
+    foreach ($semesters as $semester) {
         $title = "<em>Blok $semester->naam_kort / {$semester->schooljaar->naam}</em>";
-        if($semester->cohort) $title = "C$semester->cohort: $title";
+        if ($semester->cohort) $title = "C$semester->cohort: $title";
         $result[] = [
             'id' => 's' . $semester->id,
             'allDay' => true,

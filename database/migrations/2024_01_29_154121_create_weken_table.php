@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('weken', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Semester::class);
+            $table->foreignIdFor(Semester::class)->constrained()->onDelete('cascade');;
             $table->date('maandag');
             $table->integer('nummer');
             $table->string('naam')->nullable();
