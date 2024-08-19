@@ -25,11 +25,21 @@ class Week extends Model
         $maandag = now()->startOfWeek(Carbon::MONDAY);
 
         if ($cohort) {
-            $week = Week::whereDate('maandag', $maandag)->where('cohort', $cohort)->get();
+            $week = Week::whereDate('maandag', $maandag)
+                ->where('cohort', $cohort)->get();
             if ($week->count() > 0) return $week;
         }
 
-        return Week::whereDate('maandag', $maandag)->get();
+        $currentWeeks = Week::whereDate('maandag', $maandag)->get();
+
+        if ($currentWeeks->count() > 0)
+            return $currentWeeks;
+
+        // HOTFIX: I don't know what to return so Imma just return everything for the last schoolyear
+        // This happens before/after the semester starts/ends?
+        return Schooljaar::latest()->first()->semesters->map(function ($semester) {
+            return $semester->weeks;
+        })->flatten();
     }
 
     public static function prepareData($weeks)

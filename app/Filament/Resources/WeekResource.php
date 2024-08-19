@@ -23,7 +23,33 @@ class WeekResource extends Resource
     {
         return $form
             ->schema([
-                //
+                //     Forms\Components\Select::make('semester_id')
+                //         ->relationship('semester')
+                //         ->getOptionLabelFromRecordUsing(fn ($record) => "Semester {$record->naam}")
+                //         ->searchable()
+                //         ->preload()
+                //         ->required(),
+
+                //     Forms\Components\DatePicker::make('maandag')
+                //         ->required(),
+
+                //     Forms\Components\TextInput::make('nummer')
+                //         ->numeric()
+                //         ->required(),
+
+                //     Forms\Components\Select::make('type')
+                //         ->options([
+                //             'lesweek' => 'Lesweek',
+                //             'bufferweek' => 'Bufferweek',
+                //             'vakantie' => 'Vakantie',
+                //         ])
+                //         ->required(),
+
+                //     Forms\Components\TextInput::make('naam')
+                //         ->required(),
+
+                //     Forms\Components\TextInput::make('cohort')
+                //         ->numeric(),
             ]);
     }
 
@@ -65,7 +91,7 @@ class WeekResource extends Resource
     {
         return [
             'index' => Pages\ListWeeks::route('/'),
-            'create' => Pages\CreateWeek::route('/create'),
+            // 'create' => Pages\CreateWeek::route('/create'), // Use the wizard instead
             'edit' => Pages\EditWeek::route('/{record}/edit'),
         ];
     }
