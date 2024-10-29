@@ -31,11 +31,11 @@ class WeekResource extends Resource
                         ->disabled(),
 
                     Forms\Components\DatePicker::make('maandag')
-                        ->disabled(),
+                        ->required(),
 
                     Forms\Components\TextInput::make('nummer')
                         ->numeric()
-                        ->disabled(),
+                        ->required(),
 
                     Forms\Components\Select::make('type')
                         ->options([
