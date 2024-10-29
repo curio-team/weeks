@@ -23,33 +23,32 @@ class WeekResource extends Resource
     {
         return $form
             ->schema([
-                //     Forms\Components\Select::make('semester_id')
-                //         ->relationship('semester')
-                //         ->getOptionLabelFromRecordUsing(fn ($record) => "Semester {$record->naam}")
-                //         ->searchable()
-                //         ->preload()
-                //         ->required(),
+                    Forms\Components\Select::make('semester_id')
+                        ->relationship('semester')
+                        ->getOptionLabelFromRecordUsing(fn ($record) => "Semester {$record->naam}")
+                        ->searchable()
+                        ->preload()
+                        ->disabled(),
 
-                //     Forms\Components\DatePicker::make('maandag')
-                //         ->required(),
+                    Forms\Components\DatePicker::make('maandag')
+                        ->disabled(),
 
-                //     Forms\Components\TextInput::make('nummer')
-                //         ->numeric()
-                //         ->required(),
+                    Forms\Components\TextInput::make('nummer')
+                        ->numeric()
+                        ->disabled(),
 
-                //     Forms\Components\Select::make('type')
-                //         ->options([
-                //             'lesweek' => 'Lesweek',
-                //             'bufferweek' => 'Bufferweek',
-                //             'vakantie' => 'Vakantie',
-                //         ])
-                //         ->required(),
+                    Forms\Components\Select::make('type')
+                        ->options([
+                            'lesweek' => 'Lesweek',
+                            'bufferweek' => 'Bufferweek',
+                            'vakantie' => 'Vakantie',
+                        ])
+                        ->required(),
 
-                //     Forms\Components\TextInput::make('naam')
-                //         ->required(),
+                    Forms\Components\TextInput::make('naam'),
 
-                //     Forms\Components\TextInput::make('cohort')
-                //         ->numeric(),
+                    Forms\Components\TextInput::make('cohort')
+                        ->disabled(),
             ]);
     }
 
@@ -68,7 +67,10 @@ class WeekResource extends Resource
                     ->numeric(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('semester_id')
+                    ->relationship('semester', 'id')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => "Semester {$record->naam}")
+                    ->preload(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
