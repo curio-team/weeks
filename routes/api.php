@@ -32,8 +32,8 @@ Route::get('/cohort/{cohort}', function ($cohort) {
     return Week::prepareData($weeks);
 });
 
-Route::get('/only/{type}', fn ($type) => getOnly($type));
-Route::get('/cohort/{cohort}/only/{type}', fn ($cohort, $type) => getOnly($type, $cohort));
+Route::get('/only/{type}', fn($type) => getOnly($type));
+Route::get('/cohort/{cohort}/only/{type}', fn($cohort, $type) => getOnly($type, $cohort));
 
 function getOnly($type, $cohort = null)
 {
@@ -49,11 +49,27 @@ function getOnly($type, $cohort = null)
     }
 }
 
+// E.g: call with: ?start=2023-01-01&end=2023-12-31
 Route::get('/list', function (Request $request) {
+    if (!$request->start || !$request->end) {
+        return response()->json(['error' => ['code' => 2, 'text' => 'Geef een start en eind datum op']], 400);
+    }
+
+    try {
+        $start = Carbon::parse($request->start)->startOfDay();
+        $end = Carbon::parse($request->end)->endOfDay();
+    } catch (\Exception $e) {
+        return response()->json(['error' => ['code' => 2, 'text' => 'Ongeldige datum formaat']], 400);
+    }
+
+    if ($start->greaterThan($end)) {
+        return response()->json(['error' => ['code' => 2, 'text' => 'Start datum moet voor eind datum zijn']], 400);
+    }
 
     $result = array();
 
-    $weeks = Week::whereDate('maandag', '>=', $request->start)->whereDate('maandag', '<=', $request->end)->get();
+    $weeks = Week::whereDate('maandag', '>=', $start)->whereDate('maandag', '<=', $end)->get();
+
     foreach ($weeks as $week) {
 
         if ($week->type == WeekType::BUFFER && !$week->naam) {
