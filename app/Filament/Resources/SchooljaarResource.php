@@ -50,7 +50,7 @@ class SchooljaarResource extends Resource
                     ->date()
                     ->sortable()
             ])
-            ->defaultSort('start')
+            ->defaultSort('start', 'desc')
             ->actions([
                 Tables\Actions\EditAction::make(),
             ]);

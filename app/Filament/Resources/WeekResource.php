@@ -58,6 +58,7 @@ class WeekResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('semester.naam'),
                 Tables\Columns\TextColumn::make('nummer')
+                    ->label('Weeknummer')
                     ->numeric(),
                 Tables\Columns\TextColumn::make('maandag')
                     ->date(),
@@ -79,7 +80,8 @@ class WeekResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('maandag', 'desc');
     }
 
     public static function getRelations(): array
