@@ -9,8 +9,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "curio/sdclient": "4.1.1-alpha",
-        "filament/filament": "3.2",
+        "curio/sdclient": "^4.1.1",
+        "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
