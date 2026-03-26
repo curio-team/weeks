@@ -66,7 +66,7 @@ Route::get('/list', function (Request $request) {
         return response()->json(['error' => ['code' => 2, 'text' => 'Start datum moet voor eind datum zijn']], 400);
     }
 
-    $result = array();
+    $result = [];
 
     $weeks = Week::whereDate('maandag', '>=', $start)->whereDate('maandag', '<=', $end)->get();
 

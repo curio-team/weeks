@@ -79,7 +79,7 @@ class Wizard extends Page implements HasForms
                         ->schema(function (Get $get) {
                             $schooljaar_start = $get('schooljaar_start') ?? "";
                             $schooljaar_eind = $get('schooljaar_eind') ?? "";
-                            $fieldsets = array();
+                            $fieldsets = [];
                             $i = 0;
                             foreach (Volgorde::cases() as $case) {
                                 $fieldsets[] = Forms\Components\Fieldset::make($case->naamExtraLang())
@@ -137,7 +137,7 @@ class Wizard extends Page implements HasForms
                         }),
                     Step::make('Weken')
                         ->schema(function () {
-                            $fieldsets = array();
+                            $fieldsets = [];
                             $fieldsets[] = View::make('filament.pages.wizard_weken_uitleg');
 
                             $i = 0;
@@ -146,7 +146,7 @@ class Wizard extends Page implements HasForms
                                     ->schema(function (Get $get) use ($i) {
                                         $start_datum = $get("semesters.$i.start");
                                         $eind_datum = $get("semesters.$i.eind");
-                                        $fields = array();
+                                        $fields = [];
                                         if (isset($start_datum) && isset($eind_datum)) {
                                             $j = 0;
                                             $period = new CarbonPeriod($start_datum, '7 days', $eind_datum);
