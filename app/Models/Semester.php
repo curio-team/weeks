@@ -9,11 +9,14 @@ class Semester extends Model
 {
     protected $table = 'semesters';
 
-    protected $casts = [
-        'start' => 'date:Y-m-d',
-        'eind' => 'date:Y-m-d',
-        'volgorde' => Volgorde::class,
-    ];
+    protected function casts(): array
+    {
+        return [
+            'start' => 'date:Y-m-d',
+            'eind' => 'date:Y-m-d',
+            'volgorde' => Volgorde::class,
+        ];
+    }
 
     public function schooljaar()
     {

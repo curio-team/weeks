@@ -8,10 +8,13 @@ class Schooljaar extends Model
 {
     protected $table = 'schooljaren';
 
-    protected $casts = [
-        'start' => 'date:Y-m-d',
-        'eind' => 'date:Y-m-d',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'start' => 'date:Y-m-d',
+            'eind' => 'date:Y-m-d',
+        ];
+    }
 
     public function getNaamAttribute()
     {

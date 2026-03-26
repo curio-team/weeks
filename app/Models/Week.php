@@ -10,10 +10,13 @@ class Week extends Model
 {
     protected $table = 'weken';
 
-    protected $casts = [
-        'maandag' => 'date:Y-m-d',
-        'type' => WeekType::class,
-    ];
+    protected function casts(): array
+    {
+        return [
+            'maandag' => 'date:Y-m-d',
+            'type' => WeekType::class,
+        ];
+    }
 
     public function semester()
     {
