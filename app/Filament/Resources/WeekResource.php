@@ -2,10 +2,20 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\WeekResource\Pages\ListWeeks;
+use App\Filament\Resources\WeekResource\Pages\EditWeek;
 use App\Filament\Resources\WeekResource\Pages;
 use App\Models\Week;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -14,29 +24,29 @@ class WeekResource extends Resource
 {
     protected static ?string $model = Week::class;
 
-    protected static ?string $navigationGroup = 'Basisdata';
+    protected static string | \UnitEnum | null $navigationGroup = 'Basisdata';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('semester_id')
+        return $schema
+            ->components([
+                Select::make('semester_id')
                     ->relationship('semester')
                     ->getOptionLabelFromRecordUsing(fn ($record) => "Semester {$record->naam}")
                     ->searchable()
                     ->preload()
                     ->disabled(),
 
-                Forms\Components\DatePicker::make('maandag')
+                DatePicker::make('maandag')
                     ->required(),
 
-                Forms\Components\TextInput::make('nummer')
+                TextInput::make('nummer')
                     ->numeric()
                     ->required(),
 
-                Forms\Components\Select::make('type')
+                Select::make('type')
                     ->options([
                         'lesweek' => 'Lesweek',
                         'bufferweek' => 'Bufferweek',
@@ -44,9 +54,9 @@ class WeekResource extends Resource
                     ])
                     ->required(),
 
-                Forms\Components\TextInput::make('naam'),
+                TextInput::make('naam'),
 
-                Forms\Components\TextInput::make('cohort')
+                TextInput::make('cohort')
                     ->disabled(),
             ]);
     }
@@ -55,29 +65,29 @@ class WeekResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('semester.naam'),
-                Tables\Columns\TextColumn::make('nummer')
+                TextColumn::make('semester.naam'),
+                TextColumn::make('nummer')
                     ->label('Weeknummer')
                     ->numeric(),
-                Tables\Columns\TextColumn::make('maandag')
+                TextColumn::make('maandag')
                     ->date(),
-                Tables\Columns\TextColumn::make('type'),
-                Tables\Columns\TextColumn::make('naam'),
-                Tables\Columns\TextColumn::make('cohort')
+                TextColumn::make('type'),
+                TextColumn::make('naam'),
+                TextColumn::make('cohort')
                     ->numeric(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('semester_id')
+                SelectFilter::make('semester_id')
                     ->relationship('semester', 'id')
                     ->getOptionLabelFromRecordUsing(fn ($record) => "Semester {$record->naam}")
                     ->preload(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('maandag', 'desc');
@@ -93,9 +103,9 @@ class WeekResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListWeeks::route('/'),
+            'index' => ListWeeks::route('/'),
             // 'create' => Pages\CreateWeek::route('/create'), // Use the wizard instead
-            'edit' => Pages\EditWeek::route('/{record}/edit'),
+            'edit' => EditWeek::route('/{record}/edit'),
         ];
     }
 }

@@ -2,6 +2,18 @@
 
 namespace App\Filament\Pages;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Wizard\Step;
+use Filament\Forms\Components\DatePicker;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Components\View;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\TextInput;
+use Filament\Actions\Action;
+use Filament\Forms\Components\Select;
 use App\Enums\Volgorde;
 use App\Enums\WeekType;
 use App\Models\Schooljaar;
@@ -11,16 +23,8 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Closure;
 use Filament\Forms;
-use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Components\Component;
-use Filament\Forms\Components\View;
-use Filament\Forms\Components\Wizard as WizardComponent;
-use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Blade;
@@ -34,19 +38,19 @@ class Wizard extends Page implements HasForms
 
     protected static ?string $title = 'Nieuw schooljaar';
 
-    protected static ?string $navigationIcon = 'heroicon-o-sparkles';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-sparkles';
 
-    protected static string $view = 'filament.pages.wizard';
+    protected string $view = 'filament.pages.wizard';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                WizardComponent::make([
+        return $schema
+            ->components([
+                \Filament\Schemas\Components\Wizard::make([
                     Step::make('Schooljaar')
                         ->columns(2)
                         ->schema([
-                            Forms\Components\DatePicker::make('schooljaar_start')
+                            DatePicker::make('schooljaar_start')
                                 ->autofocus()
                                 ->required()
                                 ->label('Startdatum')
@@ -61,7 +65,7 @@ class Wizard extends Page implements HasForms
                                         };
                                     },
                                 ]),
-                            Forms\Components\DatePicker::make('schooljaar_eind')
+                            DatePicker::make('schooljaar_eind')
                                 ->required()
                                 ->label('Einddatum')
                                 ->hint('laatste dag van het schooljaar')
@@ -84,9 +88,9 @@ class Wizard extends Page implements HasForms
                             $fieldsets = [];
                             $i = 0;
                             foreach (Volgorde::cases() as $case) {
-                                $fieldsets[] = Forms\Components\Fieldset::make($case->naamExtraLang())
+                                $fieldsets[] = Fieldset::make($case->naamExtraLang())
                                     ->schema([
-                                        Forms\Components\DatePicker::make("semesters.$i.start")
+                                        DatePicker::make("semesters.$i.start")
                                             ->hint('eerste dag van semester')
                                             ->label('Startdatum')
                                             ->required()
@@ -107,7 +111,7 @@ class Wizard extends Page implements HasForms
                                                     };
                                                 },
                                             ]),
-                                        Forms\Components\DatePicker::make("semesters.$i.eind")
+                                        DatePicker::make("semesters.$i.eind")
                                             ->hint('laatste dag van semester')
                                             ->label('Einddatum')
                                             ->default('2024-03-10')
@@ -145,7 +149,7 @@ class Wizard extends Page implements HasForms
 
                             $i = 0;
                             foreach (Volgorde::cases() as $case) {
-                                $fieldsets[] = Forms\Components\Fieldset::make($case->naamExtraLang())
+                                $fieldsets[] = Fieldset::make($case->naamExtraLang())
                                     ->schema(function (Get $get) use ($i) {
                                         $start_datum = $get("semesters.$i.start");
                                         $eind_datum = $get("semesters.$i.eind");
@@ -156,10 +160,10 @@ class Wizard extends Page implements HasForms
                                             $count = $period->count();
                                             $period->forEach(function (Carbon $date) use ($i, &$j, &$fields, $count) {
 
-                                                $fields[] = Forms\Components\Hidden::make("semesters.$i.weeks.$j.monday");
+                                                $fields[] = Hidden::make("semesters.$i.weeks.$j.monday");
                                                 $this->data['semesters'][$i]['weeks'][$j]['monday'] = $date->format('Y-m-d');
 
-                                                $fields[] = Forms\Components\TextInput::make("semesters.$i.weeks.$j.num")
+                                                $fields[] = TextInput::make("semesters.$i.weeks.$j.num")
                                                     ->label($date->format('d-m-Y'))
                                                     ->required()
                                                     ->inlineLabel()
@@ -176,8 +180,8 @@ class Wizard extends Page implements HasForms
                                                             })
                                                     );
 
-                                                $fields[] = Forms\Components\Select::make("semesters.$i.weeks.$j.type")->hiddenLabel()->options(WeekType::class)->default('lesweek')->selectablePlaceholder(false);
-                                                $fields[] = Forms\Components\TextInput::make("semesters.$i.weeks.$j.name")->hiddenLabel()->placeholder('Naam');
+                                                $fields[] = Select::make("semesters.$i.weeks.$j.type")->hiddenLabel()->options(WeekType::class)->default('lesweek')->selectablePlaceholder(false);
+                                                $fields[] = TextInput::make("semesters.$i.weeks.$j.name")->hiddenLabel()->placeholder('Naam');
 
                                                 $j++;
                                             });
