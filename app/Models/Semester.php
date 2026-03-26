@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use App\Enums\Volgorde;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+#[Table('semesters')]
 class Semester extends Model
 {
-    protected $table = 'semesters';
-
     protected function casts(): array
     {
         return [

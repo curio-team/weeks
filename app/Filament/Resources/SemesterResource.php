@@ -2,11 +2,21 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\SemesterResource\Pages\ListSemesters;
+use App\Filament\Resources\SemesterResource\Pages\CreateSemester;
+use App\Filament\Resources\SemesterResource\Pages\EditSemester;
 use App\Enums\Volgorde;
 use App\Filament\Resources\SemesterResource\Pages;
 use App\Models\Semester;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -15,41 +25,41 @@ class SemesterResource extends Resource
 {
     protected static ?string $model = Semester::class;
 
-    protected static ?string $navigationGroup = 'Basisdata';
+    protected static string | \UnitEnum | null $navigationGroup = 'Basisdata';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('schooljaar_id')
+        return $schema
+            ->components([
+                Select::make('schooljaar_id')
                     ->relationship('schooljaar')
                     ->getOptionLabelFromRecordUsing(fn ($record) => "Schooljaar {$record->start->format('y')}-{$record->eind->format('y')}")
                     ->searchable()
                     ->preload()
                     ->createOptionForm([
-                        Forms\Components\DatePicker::make('start')
+                        DatePicker::make('start')
                             ->autofocus()
                             ->required()
                             ->label('Startdatum')
                             ->hint('eerste dag van het schooljaar'),
-                        Forms\Components\DatePicker::make('eind')
+                        DatePicker::make('eind')
                             ->required()
                             ->label('Einddatum')
                             ->hint('laatste dag van het schooljaar'),
                     ])
                     ->required(),
-                Forms\Components\Select::make('volgorde')
+                Select::make('volgorde')
                     ->options(Volgorde::class)
                     ->required(),
-                Forms\Components\DatePicker::make('start')
+                DatePicker::make('start')
                     ->hint('eerste dag van semester')
                     ->required(),
-                Forms\Components\DatePicker::make('eind')
+                DatePicker::make('eind')
                     ->hint('laatste dag van semester')
                     ->required(),
-                Forms\Components\TextInput::make('cohort')
+                TextInput::make('cohort')
                     ->numeric()
                     ->hint('optioneel')
                     ->helperText("Geldt dit semester alleen voor een specifiek cohort? Vul hier dan de tweecijferige afkorting in, bijvoorbeeld '21'.")
@@ -63,31 +73,31 @@ class SemesterResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('naam')
+                TextColumn::make('naam')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('schooljaar.naam')
+                TextColumn::make('schooljaar.naam')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('volgorde'),
-                Tables\Columns\TextColumn::make('start')
+                TextColumn::make('volgorde'),
+                TextColumn::make('start')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('eind')
+                TextColumn::make('eind')
                     ->date(),
-                Tables\Columns\TextColumn::make('cohort')
+                TextColumn::make('cohort')
                     ->numeric()
                     ->sortable(),
             ])
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('start', 'desc');
@@ -103,9 +113,9 @@ class SemesterResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSemesters::route('/'),
-            'create' => Pages\CreateSemester::route('/create'),
-            'edit' => Pages\EditSemester::route('/{record}/edit'),
+            'index' => ListSemesters::route('/'),
+            'create' => CreateSemester::route('/create'),
+            'edit' => EditSemester::route('/{record}/edit'),
         ];
     }
 }

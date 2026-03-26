@@ -4,13 +4,13 @@ namespace App\Models;
 
 use App\Enums\WeekType;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[Table('weken')]
 class Week extends Model
 {
-    protected $table = 'weken';
-
     protected function casts(): array
     {
         return [
