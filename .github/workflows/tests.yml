@@ -43,6 +43,19 @@ jobs:
         env:
           APP_ENV: testing
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install frontend dependencies
+        run: |
+          npm ci --no-audit --no-fund
+
+      - name: Build assets (Vite)
+        run: npm run build
+
       - name: Run tests
         env:
           APP_ENV: testing
