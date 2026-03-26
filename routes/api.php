@@ -18,9 +18,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//
-// FULLCALENDAR OM TE DISPLAYEN IN BROWSER?!
-//
+if (! function_exists('getOnly')) {
+    function getOnly($type, $cohort = null)
+    {
+        $weeks = Week::getCurrentWeeks($cohort);
+        $data = Week::prepareData($weeks);
+
+        switch ($type) {
+            case 'week':
+                return $data['week']->nummer;
+
+            default:
+                return ['error' => ['code' => 3, 'text' => 'ongeldig type']];
+        }
+    }
+}
 
 Route::get('/', function () {
     $weeks = Week::getCurrentWeeks();
@@ -34,22 +46,8 @@ Route::get('/cohort/{cohort}', function ($cohort) {
     return Week::prepareData($weeks);
 });
 
-Route::get('/only/{type}', fn ($type) => getOnly($type));
-Route::get('/cohort/{cohort}/only/{type}', fn ($cohort, $type) => getOnly($type, $cohort));
-
-function getOnly($type, $cohort = null)
-{
-    $weeks = Week::getCurrentWeeks($cohort);
-    $data = Week::prepareData($weeks);
-
-    switch ($type) {
-        case 'week':
-            return $data['week']->nummer;
-
-        default:
-            return ['error' => ['code' => 3, 'text' => 'ongeldig type']];
-    }
-}
+Route::get('/only/{type}', fn($type) => getOnly($type));
+Route::get('/cohort/{cohort}/only/{type}', fn($cohort, $type) => getOnly($type, $cohort));
 
 // E.g: call with: ?start=2023-01-01&end=2023-12-31
 Route::get('/list', function (Request $request) {
@@ -86,7 +84,7 @@ Route::get('/list', function (Request $request) {
             $title = "C$week->cohort: $title";
         }
         $result[] = [
-            'id' => 'w'.$week->id,
+            'id' => 'w' . $week->id,
             'allDay' => true,
             'start' => $week->maandag,
             'end' => $week->maandag->addDays(5),
@@ -104,7 +102,7 @@ Route::get('/list', function (Request $request) {
             $title = "C$semester->cohort: $title";
         }
         $result[] = [
-            'id' => 's'.$semester->id,
+            'id' => 's' . $semester->id,
             'allDay' => true,
             'start' => $semester->start,
             'end' => $semester->eind,
