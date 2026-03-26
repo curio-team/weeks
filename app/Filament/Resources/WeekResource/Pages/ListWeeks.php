@@ -4,8 +4,8 @@ namespace App\Filament\Resources\WeekResource\Pages;
 
 use App\Filament\Resources\WeekResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
+use Filament\Resources\Pages\ListRecords;
 
 class ListWeeks extends ListRecords
 {

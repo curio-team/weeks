@@ -1,11 +1,11 @@
 <?php
 
 use App\Enums\WeekType;
+use App\Models\Semester;
+use App\Models\Week;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Carbon\Carbon;
-use App\Models\Week;
-use App\Models\Semester;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,21 +24,23 @@ use App\Models\Semester;
 
 Route::get('/', function () {
     $weeks = Week::getCurrentWeeks();
+
     return Week::prepareData($weeks);
 });
 
 Route::get('/cohort/{cohort}', function ($cohort) {
     $weeks = Week::getCurrentWeeks($cohort);
+
     return Week::prepareData($weeks);
 });
 
-Route::get('/only/{type}', fn($type) => getOnly($type));
-Route::get('/cohort/{cohort}/only/{type}', fn($cohort, $type) => getOnly($type, $cohort));
+Route::get('/only/{type}', fn ($type) => getOnly($type));
+Route::get('/cohort/{cohort}/only/{type}', fn ($cohort, $type) => getOnly($type, $cohort));
 
 function getOnly($type, $cohort = null)
 {
     $weeks = Week::getCurrentWeeks($cohort);
-    $data  = Week::prepareData($weeks);
+    $data = Week::prepareData($weeks);
 
     switch ($type) {
         case 'week':
@@ -51,7 +53,7 @@ function getOnly($type, $cohort = null)
 
 // E.g: call with: ?start=2023-01-01&end=2023-12-31
 Route::get('/list', function (Request $request) {
-    if (!$request->start || !$request->end) {
+    if (! $request->start || ! $request->end) {
         return response()->json(['error' => ['code' => 2, 'text' => 'Geef een start en eind datum op']], 400);
     }
 
@@ -66,44 +68,50 @@ Route::get('/list', function (Request $request) {
         return response()->json(['error' => ['code' => 2, 'text' => 'Start datum moet voor eind datum zijn']], 400);
     }
 
-    $result = array();
+    $result = [];
 
     $weeks = Week::whereDate('maandag', '>=', $start)->whereDate('maandag', '<=', $end)->get();
 
     foreach ($weeks as $week) {
 
-        if ($week->type == WeekType::BUFFER && !$week->naam) {
-            $week->naam = "Bufferweek";
+        if ($week->type == WeekType::BUFFER && ! $week->naam) {
+            $week->naam = 'Bufferweek';
         }
 
         $title = "<strong>Week $week->nummer</strong>";
-        if ($week->naam) $title = "Week $week->nummer - <strong>$week->naam</strong>";
-        if ($week->cohort) $title = "C$week->cohort: $title";
+        if ($week->naam) {
+            $title = "Week $week->nummer - <strong>$week->naam</strong>";
+        }
+        if ($week->cohort) {
+            $title = "C$week->cohort: $title";
+        }
         $result[] = [
-            'id' => 'w' . $week->id,
+            'id' => 'w'.$week->id,
             'allDay' => true,
             'start' => $week->maandag,
             'end' => $week->maandag->addDays(5),
             'title' => $title,
             'color' => '#48486e',
             'textColor' => '#ededf7',
-            'cohort' => $week->cohort ?? 0
+            'cohort' => $week->cohort ?? 0,
         ];
     }
 
     $semesters = Semester::whereDate('start', '<=', $request->end)->whereDate('eind', '>=', $request->start)->get();
     foreach ($semesters as $semester) {
         $title = "<em>Blok $semester->naam_kort / {$semester->schooljaar->naam}</em>";
-        if ($semester->cohort) $title = "C$semester->cohort: $title";
+        if ($semester->cohort) {
+            $title = "C$semester->cohort: $title";
+        }
         $result[] = [
-            'id' => 's' . $semester->id,
+            'id' => 's'.$semester->id,
             'allDay' => true,
             'start' => $semester->start,
             'end' => $semester->eind,
             'title' => $title,
             'color' => '#c1d6ca',
             'textColor' => '#626e67',
-            'cohort' => (100 + $semester->cohort) ?? 100
+            'cohort' => (100 + $semester->cohort) ?? 100,
         ];
     }
 

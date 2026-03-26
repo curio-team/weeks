@@ -3,16 +3,16 @@
 namespace App\Models;
 
 use App\Enums\WeekType;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
 class Week extends Model
 {
     protected $table = 'weken';
+
     protected $casts = [
         'maandag' => 'date:Y-m-d',
-        'type'    => WeekType::class
+        'type' => WeekType::class,
     ];
 
     public function semester()
@@ -27,13 +27,16 @@ class Week extends Model
         if ($cohort) {
             $week = Week::whereDate('maandag', $maandag)
                 ->where('cohort', $cohort)->get();
-            if ($week->count() > 0) return $week;
+            if ($week->count() > 0) {
+                return $week;
+            }
         }
 
         $currentWeeks = Week::whereDate('maandag', $maandag)->get();
 
-        if ($currentWeeks->count() > 0)
+        if ($currentWeeks->count() > 0) {
             return $currentWeeks;
+        }
 
         // HOTFIX: I don't know what to return so Imma just return everything for the last schoolyear
         // This happens before/after the semester starts/ends?
@@ -56,10 +59,12 @@ class Week extends Model
             unset($week->cohort, $semester->cohort);
 
             return [
-                "week" => $week,
-                "semester" => $semester,
-                "schooljaar" => $schooljaar
+                'week' => $week,
+                'semester' => $semester,
+                'schooljaar' => $schooljaar,
             ];
-        } elseif (count($weeks) < 1) return ['error' => ['code' => 1, 'text' => 'geen week gevonden']];
+        } elseif (count($weeks) < 1) {
+            return ['error' => ['code' => 1, 'text' => 'geen week gevonden']];
+        }
     }
 }

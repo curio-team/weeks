@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Filament\Panel;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements FilamentUser
@@ -17,6 +17,6 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return ($this->type == 'teacher');
+        return $this->type == 'teacher';
     }
 }

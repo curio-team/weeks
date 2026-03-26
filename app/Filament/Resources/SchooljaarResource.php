@@ -3,22 +3,23 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\SchooljaarResource\Pages;
-use App\Filament\Resources\SchooljaarResource\RelationManagers;
 use App\Models\Schooljaar;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SchooljaarResource extends Resource
 {
     protected static ?string $model = Schooljaar::class;
+
     protected static ?string $navigationGroup = 'Basisdata';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $pluralModelLabel = 'schooljaren';
+
     protected static ?string $slug = 'schooljaren';
 
     public static function form(Form $form): Form
@@ -48,7 +49,7 @@ class SchooljaarResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('eind')
                     ->date()
-                    ->sortable()
+                    ->sortable(),
             ])
             ->defaultSort('start', 'desc')
             ->actions([
