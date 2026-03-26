@@ -2,22 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SemesterResource\Pages;
-use App\Filament\Resources\SemesterResource\RelationManagers;
-use App\Models\Semester;
 use App\Enums\Volgorde;
+use App\Filament\Resources\SemesterResource\Pages;
+use App\Models\Semester;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SemesterResource extends Resource
 {
     protected static ?string $model = Semester::class;
+
     protected static ?string $navigationGroup = 'Basisdata';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -52,7 +51,7 @@ class SemesterResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('cohort')
                     ->numeric()
-                    ->hint("optioneel")
+                    ->hint('optioneel')
                     ->helperText("Geldt dit semester alleen voor een specifiek cohort? Vul hier dan de tweecijferige afkorting in, bijvoorbeeld '21'.")
                     ->columnSpanFull()
                     ->minValue(10)

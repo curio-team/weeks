@@ -2,7 +2,6 @@
 
 namespace App\Filament\Pages;
 
-use Closure;
 use App\Enums\Volgorde;
 use App\Enums\WeekType;
 use App\Models\Schooljaar;
@@ -10,19 +9,20 @@ use App\Models\Semester;
 use App\Models\Week;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
-use Filament\Pages\Page;
+use Closure;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Components\Wizard as WizardComponent;
-use Filament\Forms\Components\Wizard\Step;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\View;
+use Filament\Forms\Components\Wizard as WizardComponent;
+use Filament\Forms\Components\Wizard\Step;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Notifications\Notification;
+use Filament\Pages\Page;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
 
@@ -33,7 +33,9 @@ class Wizard extends Page implements HasForms
     public ?array $data = [];
 
     protected static ?string $title = 'Nieuw schooljaar';
+
     protected static ?string $navigationIcon = 'heroicon-o-sparkles';
+
     protected static string $view = 'filament.pages.wizard';
 
     public function form(Form $form): Form
@@ -49,7 +51,7 @@ class Wizard extends Page implements HasForms
                                 ->required()
                                 ->label('Startdatum')
                                 ->hint('eerste dag van het schooljaar')
-                                ->default("2024-03-04")
+                                ->default('2024-03-04')
                                 ->rules([
                                     function () {
                                         return function (string $attribute, $value, Closure $fail) {
@@ -64,7 +66,7 @@ class Wizard extends Page implements HasForms
                                 ->label('Einddatum')
                                 ->hint('laatste dag van het schooljaar')
                                 ->after('schooljaar_start')
-                                ->default("2024-06-23")
+                                ->default('2024-06-23')
                                 ->rules([
                                     function () {
                                         return function (string $attribute, $value, Closure $fail) {
@@ -77,9 +79,9 @@ class Wizard extends Page implements HasForms
                         ]),
                     Step::make('Semesters')
                         ->schema(function (Get $get) {
-                            $schooljaar_start = $get('schooljaar_start') ?? "";
-                            $schooljaar_eind = $get('schooljaar_eind') ?? "";
-                            $fieldsets = array();
+                            $schooljaar_start = $get('schooljaar_start') ?? '';
+                            $schooljaar_eind = $get('schooljaar_eind') ?? '';
+                            $fieldsets = [];
                             $i = 0;
                             foreach (Volgorde::cases() as $case) {
                                 $fieldsets[] = Forms\Components\Fieldset::make($case->naamExtraLang())
@@ -88,7 +90,7 @@ class Wizard extends Page implements HasForms
                                             ->hint('eerste dag van semester')
                                             ->label('Startdatum')
                                             ->required()
-                                            ->default("2024-03-04")
+                                            ->default('2024-03-04')
                                             ->afterOrEqual($schooljaar_start)
                                             ->rules([
                                                 function (Get $get) use ($i) {
@@ -108,7 +110,7 @@ class Wizard extends Page implements HasForms
                                         Forms\Components\DatePicker::make("semesters.$i.eind")
                                             ->hint('laatste dag van semester')
                                             ->label('Einddatum')
-                                            ->default("2024-03-10")
+                                            ->default('2024-03-10')
                                             ->required()
                                             ->after('semester_start')
                                             ->beforeOrEqual($schooljaar_eind)
@@ -133,11 +135,12 @@ class Wizard extends Page implements HasForms
 
                                 $i++;
                             }
+
                             return $fieldsets;
                         }),
                     Step::make('Weken')
                         ->schema(function () {
-                            $fieldsets = array();
+                            $fieldsets = [];
                             $fieldsets[] = View::make('filament.pages.wizard_weken_uitleg');
 
                             $i = 0;
@@ -146,7 +149,7 @@ class Wizard extends Page implements HasForms
                                     ->schema(function (Get $get) use ($i) {
                                         $start_datum = $get("semesters.$i.start");
                                         $eind_datum = $get("semesters.$i.eind");
-                                        $fields = array();
+                                        $fields = [];
                                         if (isset($start_datum) && isset($eind_datum)) {
                                             $j = 0;
                                             $period = new CarbonPeriod($start_datum, '7 days', $eind_datum);
@@ -179,18 +182,20 @@ class Wizard extends Page implements HasForms
                                                 $j++;
                                             });
                                         }
+
                                         return $fields;
                                     })->columns(3);
 
                                 $i++;
                             }
+
                             return $fieldsets;
                         }),
                 ])->submitAction(
-                    new HtmlString(Blade::render(<<<BLADE
+                    new HtmlString(Blade::render(<<<'BLADE'
                         <x-filament::button type="submit" size="sm">Opslaan</x-filament::button>
                     BLADE))
-                )
+                ),
             ])->statePath('data');
     }
 
@@ -202,14 +207,14 @@ class Wizard extends Page implements HasForms
     public function create(): void
     {
         $data = $this->form->getState();
-        $schooljaar = new Schooljaar();
+        $schooljaar = new Schooljaar;
         $schooljaar->start = $data['schooljaar_start'];
         $schooljaar->eind = $data['schooljaar_eind'];
         $schooljaar->save();
 
         $volgorde = 1;
         foreach ($data['semesters'] as $data_semester) {
-            $semester = new Semester();
+            $semester = new Semester;
             $semester->schooljaar_id = $schooljaar->id;
             $semester->volgorde = $volgorde;
             $semester->start = $data_semester['start'];
@@ -217,7 +222,7 @@ class Wizard extends Page implements HasForms
             $semester->save();
 
             foreach ($data_semester['weeks'] as $data_week) {
-                $week = new Week();
+                $week = new Week;
                 $week->semester_id = $semester->id;
                 $week->maandag = $data_week['monday'];
                 $week->nummer = $data_week['num'];

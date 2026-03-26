@@ -3,52 +3,51 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\WeekResource\Pages;
-use App\Filament\Resources\WeekResource\RelationManagers;
 use App\Models\Week;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class WeekResource extends Resource
 {
     protected static ?string $model = Week::class;
+
     protected static ?string $navigationGroup = 'Basisdata';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                    Forms\Components\Select::make('semester_id')
-                        ->relationship('semester')
-                        ->getOptionLabelFromRecordUsing(fn ($record) => "Semester {$record->naam}")
-                        ->searchable()
-                        ->preload()
-                        ->disabled(),
+                Forms\Components\Select::make('semester_id')
+                    ->relationship('semester')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => "Semester {$record->naam}")
+                    ->searchable()
+                    ->preload()
+                    ->disabled(),
 
-                    Forms\Components\DatePicker::make('maandag')
-                        ->required(),
+                Forms\Components\DatePicker::make('maandag')
+                    ->required(),
 
-                    Forms\Components\TextInput::make('nummer')
-                        ->numeric()
-                        ->required(),
+                Forms\Components\TextInput::make('nummer')
+                    ->numeric()
+                    ->required(),
 
-                    Forms\Components\Select::make('type')
-                        ->options([
-                            'lesweek' => 'Lesweek',
-                            'bufferweek' => 'Bufferweek',
-                            'vakantie' => 'Vakantie',
-                        ])
-                        ->required(),
+                Forms\Components\Select::make('type')
+                    ->options([
+                        'lesweek' => 'Lesweek',
+                        'bufferweek' => 'Bufferweek',
+                        'vakantie' => 'Vakantie',
+                    ])
+                    ->required(),
 
-                    Forms\Components\TextInput::make('naam'),
+                Forms\Components\TextInput::make('naam'),
 
-                    Forms\Components\TextInput::make('cohort')
-                        ->disabled(),
+                Forms\Components\TextInput::make('cohort')
+                    ->disabled(),
             ]);
     }
 
