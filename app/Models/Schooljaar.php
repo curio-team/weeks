@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class Schooljaar extends Model
@@ -21,7 +22,7 @@ class Schooljaar extends Model
         return "Schooljaar {$this->start->format('y')}-{$this->eind->format('y')}";
     }
 
-    public function semesters()
+    public function semesters(): HasMany
     {
         return $this->hasMany(Semester::class);
     }

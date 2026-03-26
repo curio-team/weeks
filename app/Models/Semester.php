@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Enums\Volgorde;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,12 +20,12 @@ class Semester extends Model
         ];
     }
 
-    public function schooljaar()
+    public function schooljaar(): BelongsTo
     {
         return $this->belongsTo(Schooljaar::class);
     }
 
-    public function weeks()
+    public function weeks(): HasMany
     {
         return $this->hasMany(Week::class);
     }

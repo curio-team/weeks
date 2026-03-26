@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Enums\WeekType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +19,7 @@ class Week extends Model
         ];
     }
 
-    public function semester()
+    public function semester(): BelongsTo
     {
         return $this->belongsTo(Semester::class);
     }
