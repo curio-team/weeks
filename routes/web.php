@@ -21,5 +21,5 @@ Route::get('/sdclient/error', function () {
     $error = session('sdclient.error');
     $error_description = session('sdclient.error_description');
 
-    return 'There was an error signing in: '.$error_description.' ('.$error.')<br><a href="/login">Try again</a>';
+    return 'There was an error signing in: '.e($error_description).' ('.e($error).')<br><a href="/login">Try again</a>';
 });
